@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 buildscript {
     repositories {
         google()
@@ -18,12 +20,12 @@ allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
 
     dependencies {
-        add("detektPlugins", "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.5")
+        add("detektPlugins", "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
     }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "17"
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
