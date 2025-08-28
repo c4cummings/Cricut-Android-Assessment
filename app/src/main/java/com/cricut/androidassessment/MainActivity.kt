@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.cricut.androidassessment.ui.AppDestinations
 import com.cricut.androidassessment.ui.component.MainTopAppBar
+import com.cricut.androidassessment.ui.screens.AssessmentScreen
 import com.cricut.androidassessment.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -90,31 +91,32 @@ fun App() {
                 val args = it.toRoute<AppDestinations.QuizQuestion>()
                 //viewModel()
                 //val question = viewModel.getQuestion(args.id)
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "Question ${args.id}")
-                    Button(
-                        onClick = {
-                            navController.navigate(AppDestinations.QuizQuestion(args.id - 1))
-                        },
-                        enabled = args.id > 1
-                    ) {
-                        Text(text = "Back")
-                    }
-                    Button(onClick = {
-                        navController.navigate(AppDestinations.QuizQuestion(args.id + 1))
-                    }) {
-                        Text(text = "Next")
-                    }
-                    Button(onClick = {
-                        navController.navigate(AppDestinations.QuizEnd)
-                    }) {
-                        Text(text = "End")
-                    }
-                }
+                AssessmentScreen()
+//                Column(
+//                    modifier = Modifier.fillMaxSize(),
+//                    verticalArrangement = Arrangement.Center,
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    Text(text = "Question ${args.id}")
+//                    Button(
+//                        onClick = {
+//                            navController.navigate(AppDestinations.QuizQuestion(args.id - 1))
+//                        },
+//                        enabled = args.id > 1
+//                    ) {
+//                        Text(text = "Back")
+//                    }
+//                    Button(onClick = {
+//                        navController.navigate(AppDestinations.QuizQuestion(args.id + 1))
+//                    }) {
+//                        Text(text = "Next")
+//                    }
+//                    Button(onClick = {
+//                        navController.navigate(AppDestinations.QuizEnd)
+//                    }) {
+//                        Text(text = "End")
+//                    }
+//                }
             }
             composable<AppDestinations.QuizEnd> {
                 Column(

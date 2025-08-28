@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,8 +53,41 @@ class AssessmentViewModel
         _uiState.value = AssessmentUiState(
             currentQuestion = _questions[0],
             questionCount = _questions.size,
-            currentPosition = 0
         )
+    }
+
+    fun getQuestion(index: Int): Question<*, *> {
+        return _questions[index]
+    }
+
+    fun nextQuestion() {
+        val nextQuestionIndex = _uiState.value.currentPosition.inc()
+        if (nextQuestionIndex < _questions.size) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentQuestion = _questions[nextQuestionIndex],
+                    currentPosition = nextQuestionIndex
+                )
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isQuizOver = true
+                )
+            }
+        }
+    }
+
+    fun previousQuestion() {
+        val previousQuestionIndex = _uiState.value.currentPosition.dec()
+        if (previousQuestionIndex >= 0) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentQuestion = _questions[previousQuestionIndex],
+                    currentPosition = previousQuestionIndex
+                )
+            }
+        }
     }
 
     fun <T> checkAnswer(answer: T) {

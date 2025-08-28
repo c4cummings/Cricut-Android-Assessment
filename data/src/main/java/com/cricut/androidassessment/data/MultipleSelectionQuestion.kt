@@ -2,6 +2,8 @@ package com.cricut.androidassessment.data
 
 /**
  * Multiple-selection, multiple-choice question.
+ *
+ * TODO: Provide ability to specify grading criteria, i.e. points for each correct answer, or all or none.
  */
 data class MultipleSelectionQuestion(
     override val statement: String,
