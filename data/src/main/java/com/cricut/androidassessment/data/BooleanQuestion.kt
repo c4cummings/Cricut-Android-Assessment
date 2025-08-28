@@ -5,7 +5,9 @@ package com.cricut.androidassessment.data
  */
 data class BooleanQuestion(
     override val statement: String,
-    override val answer: Boolean
+    override val answer: Boolean,
+    val affirmative: String,
+    val negative: String
 ) : Question<Boolean, Boolean>() {
     override fun check(submission: Boolean): Boolean {
         return submission == answer
