@@ -21,11 +21,11 @@ import com.cricut.androidassessment.ui.theme.AppTheme
 
 @Composable
 fun BooleanQuestion(
-    modifier: Modifier = Modifier,
     statement: String,
     affirmative: String,
     negative: String,
-    validate: (Boolean) -> Boolean
+    validate: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier) {
         Column(
