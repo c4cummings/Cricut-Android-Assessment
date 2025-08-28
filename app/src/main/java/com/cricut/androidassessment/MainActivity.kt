@@ -4,15 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.cricut.androidassessment.ui.screens.AssessmentScreen
-import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
+import androidx.compose.ui.tooling.preview.Wallpapers
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.cricut.androidassessment.ui.AppDestinations
+import com.cricut.androidassessment.ui.component.MainTopAppBar
+import com.cricut.androidassessment.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,11 +34,164 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AndroidAssessmentTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AssessmentScreen(modifier = Modifier.padding(innerPadding))
+            AppTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    App()
                 }
             }
         }
+    }
+}
+
+@Composable
+fun App() {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = {
+            MainTopAppBar()
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = AppDestinations.Welcome,
+            modifier = Modifier
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+        ) {
+            composable<AppDestinations.Welcome> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizStart)
+                    }) {
+                        Text(text = "Assessment")
+                    }
+                }
+            }
+            composable<AppDestinations.QuizStart> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizQuestion(1))
+                    }) {
+                        Text(text = "Start")
+                    }
+                }
+            }
+            composable<AppDestinations.QuizQuestion> {
+                val args = it.toRoute<AppDestinations.QuizQuestion>()
+                //viewModel()
+                //val question = viewModel.getQuestion(args.id)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Question ${args.id}")
+                    Button(
+                        onClick = {
+                            navController.navigate(AppDestinations.QuizQuestion(args.id - 1))
+                        },
+                        enabled = args.id > 1
+                    ) {
+                        Text(text = "Back")
+                    }
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizQuestion(args.id + 1))
+                    }) {
+                        Text(text = "Next")
+                    }
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizEnd)
+                    }) {
+                        Text(text = "End")
+                    }
+                }
+            }
+            composable<AppDestinations.QuizEnd> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizResult)
+                    }) {
+                        Text(text = "See Results")
+                    }
+                }
+            }
+            composable<AppDestinations.QuizResult> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(onClick = {
+                        navController.navigate(AppDestinations.QuizStart)
+                    }) {
+                        Text(text = "Restart")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(
+    locale = "en-US",
+    showSystemUi = true,
+    showBackground = true,
+)
+@Composable
+fun AppLightThemePreview() {
+    AppTheme(darkTheme = false, dynamicColor = false) {
+        App()
+    }
+}
+
+@Preview(
+    locale = "en-US",
+    showSystemUi = true,
+    showBackground = true,
+)
+@Composable
+fun AppDarkThemePreview() {
+    AppTheme(darkTheme = true, dynamicColor = false) {
+        App()
+    }
+}
+
+@Preview(
+    locale = "en-US",
+    showSystemUi = true,
+    showBackground = true,
+    wallpaper = Wallpapers.RED_DOMINATED_EXAMPLE
+)
+@Composable
+fun AppDynamicColorLightThemePreview() {
+    AppTheme(darkTheme = false, dynamicColor = true) {
+        App()
+    }
+}
+
+@Preview(
+    locale = "en-US",
+    showSystemUi = true,
+    showBackground = true,
+    wallpaper = Wallpapers.RED_DOMINATED_EXAMPLE
+)
+@Composable
+fun AppDynamicColorDarkThemePreview() {
+    AppTheme(darkTheme = true, dynamicColor = true) {
+        App()
     }
 }
