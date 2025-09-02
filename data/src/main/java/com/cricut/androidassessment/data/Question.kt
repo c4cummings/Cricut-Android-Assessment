@@ -7,16 +7,17 @@ package com.cricut.androidassessment.data
  * @param R The type of the result, or feedback, when the submission is checked
  * @property statement The statement of the question
  * @property answer The correct answer to the question
+ * @property submission The answer submitted to be verified against the correct answer
  */
 abstract class Question<T, out R> {
     abstract val statement: String
     abstract val answer: T
+    abstract var submission: T?
 
     /**
-     * Checks if the answer is correct.
+     * Checks if the [submission] is correct.
      *
-     * @param submission The answer submitted to be verified against the correct answer
      * @return A metric of correctness
      */
-    abstract fun check(submission: T): R
+    abstract fun check(): R
 }

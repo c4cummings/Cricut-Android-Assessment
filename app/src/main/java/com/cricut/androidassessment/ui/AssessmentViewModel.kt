@@ -1,5 +1,6 @@
 package com.cricut.androidassessment.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cricut.androidassessment.data.BooleanQuestion
 import com.cricut.androidassessment.data.MultipleSelectionQuestion
@@ -90,9 +91,44 @@ class AssessmentViewModel
         }
     }
 
-    fun <T> checkAnswer(answer: T) {
-
+    fun <T> saveSubmission(index: Int, submission: T) {
+        val question = _questions[index]
+        when (question) {
+            is BooleanQuestion -> {
+                if (submission is Boolean) {
+                    (question as Question<Boolean, Any>).submission = submission
+                } else {
+                    Log.e("AssessmentViewModel", "Incorrect submission type for BooleanQuestion. Expected Boolean, got ${submission!!::class.simpleName}")
+                }
+            }
+            is MultipleSelectionQuestion -> {
+                if (submission is Set<*>) {
+                    if (submission.all { it is String }) {
+                        (question as Question<Set<String>, Any>).submission = submission as Set<String>
+                    } else {
+                        Log.e("AssessmentViewModel", "Incorrect submission type for MultipleSelectionQuestion. Expected Set<String>, but elements are not all Strings.")
+                    }
+                } else {
+                    Log.e("AssessmentViewModel", "Incorrect submission type for MultipleSelectionQuestion. Expected Set<String>, got ${submission!!::class.simpleName}")
+                }
+            }
+            is ShortAnswerQuestion -> {
+                if (submission is String) {
+                    (question as Question<String, Any>).submission = submission
+                } else {
+                    Log.e("AssessmentViewModel", "Incorrect submission type for ShortAnswerQuestion. Expected String, got ${submission!!::class.simpleName}")
+                }
+            }
+            is SingleSelectionQuestion -> {
+                if (submission is String) {
+                    (question as Question<String, Any>).submission = submission
+                } else {
+                    Log.e("AssessmentViewModel", "Incorrect submission type for SingleSelectionQuestion. Expected String, got ${submission!!::class.simpleName}")
+                }
+            }
+            else -> {
+                Log.e("AssessmentViewModel", "Unknown question type at index $index")
+            }
+        }
     }
-
-
 }

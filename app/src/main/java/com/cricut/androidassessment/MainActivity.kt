@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,7 +71,7 @@ fun App() {
                     Button(onClick = {
                         navController.navigate(AppDestinations.QuizStart)
                     }) {
-                        Text(text = "Assessment")
+                        Text(text = stringResource(id = R.string.welcome_to_quizlet))
                     }
                 }
             }
@@ -83,40 +84,12 @@ fun App() {
                     Button(onClick = {
                         navController.navigate(AppDestinations.QuizQuestion(1))
                     }) {
-                        Text(text = "Start")
+                        Text(text = stringResource(id = R.string.start_quiz))
                     }
                 }
             }
             composable<AppDestinations.QuizQuestion> {
-                val args = it.toRoute<AppDestinations.QuizQuestion>()
-                //viewModel()
-                //val question = viewModel.getQuestion(args.id)
                 AssessmentScreen()
-//                Column(
-//                    modifier = Modifier.fillMaxSize(),
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Text(text = "Question ${args.id}")
-//                    Button(
-//                        onClick = {
-//                            navController.navigate(AppDestinations.QuizQuestion(args.id - 1))
-//                        },
-//                        enabled = args.id > 1
-//                    ) {
-//                        Text(text = "Back")
-//                    }
-//                    Button(onClick = {
-//                        navController.navigate(AppDestinations.QuizQuestion(args.id + 1))
-//                    }) {
-//                        Text(text = "Next")
-//                    }
-//                    Button(onClick = {
-//                        navController.navigate(AppDestinations.QuizEnd)
-//                    }) {
-//                        Text(text = "End")
-//                    }
-//                }
             }
             composable<AppDestinations.QuizEnd> {
                 Column(
@@ -127,7 +100,7 @@ fun App() {
                     Button(onClick = {
                         navController.navigate(AppDestinations.QuizResult)
                     }) {
-                        Text(text = "See Results")
+                        Text(text = stringResource(id = R.string.see_results))
                     }
                 }
             }
@@ -140,7 +113,7 @@ fun App() {
                     Button(onClick = {
                         navController.navigate(AppDestinations.QuizStart)
                     }) {
-                        Text(text = "Restart")
+                        Text(text = stringResource(id = R.string.restart))
                     }
                 }
             }

@@ -8,15 +8,16 @@ package com.cricut.androidassessment.data
 data class MultipleSelectionQuestion(
     override val statement: String,
     val options: Set<String>,
-    override val answer: Set<String>
+    override val answer: Set<String>,
+    override var submission: Set<String>? = null
 ) : Question<Set<String>, Double>() {
-    override fun check(submission: Set<String>): Double {
-        if (submission.isEmpty()) {
-            return 0.0
+    override fun check(): Double {
+        return if (submission.isNullOrEmpty()) {
+            0.0
+        } else {
+            submission?.count {
+                answer.contains(it)
+            }?.toDouble()?.div(answer.count()) ?: 0.0
         }
-
-        return submission.count {
-            answer.contains(it)
-        }.toDouble() / answer.count()
     }
 }

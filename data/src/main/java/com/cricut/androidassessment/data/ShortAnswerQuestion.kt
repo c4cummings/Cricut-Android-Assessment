@@ -7,14 +7,15 @@ package com.cricut.androidassessment.data
  */
 data class ShortAnswerQuestion(
     override val statement: String,
-    override val answer: String
+    override val answer: String,
+    override var submission: String? = null
 ) : Question<String, Double>() {
-    override fun check(submission: String): Double {
+    override fun check(): Double {
         val answerKeywords = answer.split(" ")
         val possibleScore = answerKeywords.count().toDouble()
         var score = 0
         for (keyword in answerKeywords) {
-            if (submission.contains(keyword)) {
+            if (submission?.contains(keyword) == true) {
                 score += 1
             }
         }

@@ -66,14 +66,14 @@ fun AssessmentScreen(
                         affirmative = question.affirmative,
                         negative = question.negative,
                         onSelectedChange = { submission ->
-                            viewModel.checkAnswer(submission)
+                            viewModel.saveSubmission(page, submission)
                         }
                     )
 
                     is ShortAnswerQuestion -> com.cricut.androidassessment.ui.component.ShortAnswerQuestion(
                         statement = question.statement,
                         onAnswerChange = { submission ->
-                            viewModel.checkAnswer(submission)
+                            viewModel.saveSubmission(page, submission)
                         }
                     )
 
@@ -81,7 +81,7 @@ fun AssessmentScreen(
                         statement = question.statement,
                         options = question.options,
                         onSelectedChange = { submission ->
-                            viewModel.checkAnswer(submission)
+                            viewModel.saveSubmission(page, submission)
                         }
                     )
 
@@ -89,7 +89,7 @@ fun AssessmentScreen(
                         statement = question.statement,
                         options = question.options,
                         onSelectedChange = { submission ->
-                            viewModel.checkAnswer(submission)
+                            viewModel.saveSubmission(page, submission)
                         }
                     )
 

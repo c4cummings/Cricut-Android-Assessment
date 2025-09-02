@@ -31,7 +31,7 @@ fun SingleSelectionQuestion(
     submission: String? = null,
     maxRowSize: Int = MAX_ROW_SIZE
 ) {
-    val selectedOption = remember { mutableStateOf(submission) }
+    val (selectedOption, onSelectionChange) = remember { mutableStateOf(submission) }
 
     Column(
         modifier = modifier.padding(dimensionResource(R.dimen.padding_small)),
@@ -52,12 +52,10 @@ fun SingleSelectionQuestion(
         ) {
             options.forEach { option ->
                 SelectButton(
-                    selected = selectedOption.value == option,
+                    selected = selectedOption == option,
                     onSelectedChange = { selected ->
-                        if (selected) {
-                            selectedOption.value = option
-                        }
-                        onSelectedChange(selectedOption.value)
+                        onSelectionChange(if (selected) option else null)
+                        onSelectedChange(selectedOption)
                     }
                 ) {
                     Text(text = option)
